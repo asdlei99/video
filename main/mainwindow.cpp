@@ -12,6 +12,7 @@ const QString VIDEO_SEARCH_PATH_UDISK = QStandardPaths::writableLocation(QStanda
 const QString VIDEO_SEARCH_PATH_USERDATA = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/userdata");
 const QString VIDEO_SEARCH_PATH_OEM = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/oem");
 const QString VIDEO_SEARCH_PATH_MEDIA = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/media");
+const QString VIDEO_SEARCH_PATH_MNT = QStandardPaths::writableLocation(QStandardPaths::HomeLocation).append("/mnt");
 
 MainWindow::MainWindow(QWidget *parent) : BaseWindow(parent),
     mediaHasUpdate(false),
@@ -199,6 +200,7 @@ void MediaUpdateThread::run()
     videoFileList.append(findVideoFiles(VIDEO_SEARCH_PATH_USERDATA));
     videoFileList.append(findVideoFiles(VIDEO_SEARCH_PATH_OEM));
     videoFileList.append(findVideoFiles(VIDEO_SEARCH_PATH_MEDIA));
+    videoFileList.append(findVideoFiles(VIDEO_SEARCH_PATH_MNT));
     if (!isInterruptionRequested())
         emit m_mainWindow->searchResultAvailable(videoFileList);
 
