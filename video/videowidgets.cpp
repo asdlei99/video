@@ -370,8 +370,7 @@ void VideoWidgets::slot_setPlayPause()
     if (m_player->state() == QMediaPlayer::PlayingState) {
         m_player->pause();
     } else {
-        if (m_player->isAudioAvailable() == true)
-            m_player->play();
+        m_player->play();
     }
 
     m_controlSurface->restartHideTimer();
