@@ -211,11 +211,13 @@ void VideoWidgets::stopAudioService()
 {
     if (!m_audioSetup) {
         MusicPlayer audioService;
-        audioService.connectToService();
-        if (audioService.state() == MusicPlayer::PlayingState) {
-            audioService.pause();
+        if (audioService.isAvailable()) {
+            audioService.connectToService();
+            if (audioService.state() == MusicPlayer::PlayingState) {
+                audioService.pause();
+            }
+            audioService.clientExit();
         }
-        audioService.clientExit();
         m_audioSetup = true;
     }
 }

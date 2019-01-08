@@ -28,7 +28,7 @@ public:
     void setVolume(int value);
 
     //bool isAudioAvailable();
-    //bool isAvailable();
+    bool isAvailable();
 
     int state();
 

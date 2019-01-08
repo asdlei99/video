@@ -121,7 +121,7 @@ bool MusicPlayer::isAudioAvailable()
 
 bool MusicPlayer::isAvailable()
 {
-    return true;
+    return provider->isAvailable();
 }
 
 MusicPlayer::State MusicPlayer::state()

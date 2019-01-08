@@ -10,17 +10,15 @@
 AudioInterfaceProvider::AudioInterfaceProvider()
 {
     initMessageQueue();
+
+    if (!isAvailable())
+        printf("Failed to init AudioInterface: %s\n", strerror(errno));
 }
 
 void AudioInterfaceProvider::initMessageQueue()
 {
-    sendQueueId = msgget(REQ_QUEUE_KET,MSG_QUEUE_FLAG | IPC_CREAT);
-    if (sendQueueId == -1)
-        printf("AudioInterface: send queue init with error %s\n", strerror(errno));
-
-    feedbackQueueId = msgget(REQ_FEEDBACK_QUEUE_KEY, MSG_QUEUE_FLAG | IPC_CREAT);
-    if (feedbackQueueId == -1)
-        printf("AudioInterface: request feedback init with error %s\n", strerror(errno));
+    sendQueueId = msgget(REQ_QUEUE_KET,MSG_QUEUE_FLAG);
+    feedbackQueueId = msgget(REQ_FEEDBACK_QUEUE_KEY, MSG_QUEUE_FLAG);
 }
 
 void AudioInterfaceProvider::sendMessage(long int msgType, int intValue, char *textValue)
@@ -185,3 +183,7 @@ void AudioInterfaceProvider::currentPlayModeChanged(int currentPlayMode)
     sendMessage(REQ_TYPE_PLAY_MODE_CHANGED, currentPlayMode);
 }
 
+bool AudioInterfaceProvider::isAvailable()
+{
+    return sendQueueId >= 0 && feedbackQueueId >= 0;
+}
