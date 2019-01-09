@@ -150,6 +150,7 @@ void VideoWidgets::showUnsupportDialog()
     setOriginState();
     m_player->setMedia(NULL);
     QTimer::singleShot(2500, &box, SLOT(close()));
+    box.setWindowFlags(Qt::Popup);
     box.exec();
 }
 
@@ -177,6 +178,7 @@ void VideoWidgets::slot_onErrorOn(QMediaPlayer::Error)
                                               QMessageBox::Yes, mainWindow);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     QTimer::singleShot(2500, messageBox, SLOT(close()));
+    messageBox->setWindowFlags(Qt::Popup);
     messageBox->exec();
 }
 
@@ -360,6 +362,7 @@ void VideoWidgets::slot_fastBackward()
 void VideoWidgets::slot_tableLongPressed(int row)
 {
     QMessageBox box(QMessageBox::Warning, tr("question"), tr("sure you want to remove the record ?"));
+    box.setWindowFlags(Qt::Popup);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
     if (box.exec() == QMessageBox::Yes) {
         m_controlSurface->getListWidget()->deleteItem(row);
