@@ -152,6 +152,7 @@ MediaUpdateThread::MediaUpdateThread(MainWindow *mainWindow) : QThread(mainWindo
     m_searchSuffixList.append("mpg");
     m_searchSuffixList.append("mpg");
     m_searchSuffixList.append("m2ts");
+    m_searchSuffixList.append("m4v");
     m_searchSuffixList.append("trp");
     m_searchSuffixList.append("flv");
     m_searchSuffixList.append("WEBM");
