@@ -98,7 +98,6 @@ void MainWindow::disableApplication()
 
 void MainWindow::enableApplication()
 {
-    qDebug("enable video application.");
     this->setVisible(true);
 }
 
