@@ -1,4 +1,3 @@
-*.user
-*.user.*
+.qmake.stash
 Makefile
-pkg-config_wrapper.sh
+qvideoplayer.pro.user
