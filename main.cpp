@@ -53,6 +53,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QDebug>
 #include <QDir>
 
 int main(int argc, char **argv)
@@ -75,9 +76,19 @@ int main(int argc, char **argv)
         const QUrl url =
             QUrl::fromUserInput(parser.positionalArguments().constFirst(),
                                 QDir::currentPath(), QUrl::AssumeLocalFile);
+            qDebug() << "opening" << url.toString();
         player.load(url);
         player.play();
+    }else {
+        QFile file("/oem/SampleVideo_1280x720_5mb.mp4");
+
+        if(file.exists()){
+            qDebug() << "opening" << file.fileName();
+            player.load(QUrl::fromLocalFile(file.fileName()));
+            player.play();
+        }
     }
+
     player.showFullScreen();
     player.show();
 
