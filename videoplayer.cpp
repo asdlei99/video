@@ -63,12 +63,14 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 {
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
     videoItem = new QGraphicsVideoItem;
-    videoItem->setSize(QSizeF(screenGeometry.width() / 3, screenGeometry.height() / 2));
+    videoItem->setSize(QSizeF(screenGeometry.width(), screenGeometry.height()));
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     QGraphicsView *graphicsView = new QGraphicsView(scene);
 
     scene->addItem(videoItem);
+    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QSlider *rotateSlider = new QSlider(Qt::Horizontal);
     rotateSlider->setToolTip(tr("Rotate Video"));
