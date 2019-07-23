@@ -58,7 +58,6 @@
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
 class QSlider;
-class QGraphicsVideoItem;
 QT_END_NAMESPACE
 
 class VideoPlayer : public QWidget
@@ -72,8 +71,6 @@ public:
     void load(const QUrl &url);
     bool isPlayerAvailable() const;
 
-    QSize sizeHint() const override;
-
 public slots:
     void exit();
     void play();
@@ -83,11 +80,10 @@ private slots:
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
     void setPosition(int position);
-    void rotateVideo(int angle);
 
 private:
     QMediaPlayer mediaPlayer;
-    QGraphicsVideoItem *videoItem;
+    QVideoWidget *videoWidget;
     QAbstractButton *playButton;
     QAbstractButton *exitButton;
     QSlider *positionSlider;

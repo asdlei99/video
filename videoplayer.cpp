@@ -57,28 +57,10 @@
 VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent)
     , mediaPlayer(0, QMediaPlayer::VideoSurface)
-    , videoItem(0)
     , playButton(0)
     , positionSlider(0)
 {
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
-    videoItem = new QGraphicsVideoItem;
-    videoItem->setSize(QSizeF(screenGeometry.width(), screenGeometry.height()));
-
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    QGraphicsView *graphicsView = new QGraphicsView(scene);
-
-    scene->addItem(videoItem);
-    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    QSlider *rotateSlider = new QSlider(Qt::Horizontal);
-    rotateSlider->setToolTip(tr("Rotate Video"));
-    rotateSlider->setRange(-180,  180);
-    rotateSlider->setValue(0);
-
-    connect(rotateSlider, &QAbstractSlider::valueChanged,
-            this, &VideoPlayer::rotateVideo);
 
     exitButton = new QPushButton(tr("Exit"));
     connect(exitButton, &QAbstractButton::clicked, this, &VideoPlayer::exit);
@@ -91,7 +73,6 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     positionSlider = new QSlider(Qt::Horizontal);
     positionSlider->setRange(0, 0);
-
     connect(positionSlider, &QAbstractSlider::sliderMoved, this, &VideoPlayer::setPosition);
 
     QBoxLayout *controlLayout = new QHBoxLayout;
@@ -101,11 +82,12 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     controlLayout->addWidget(positionSlider);
 
     QBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(graphicsView);
-    layout->addWidget(rotateSlider);
+    videoWidget = new QVideoWidget;
+    layout->setMargin(0);
+    layout->addWidget(videoWidget);
     layout->addLayout(controlLayout);
 
-    mediaPlayer.setVideoOutput(videoItem);
+    mediaPlayer.setVideoOutput(videoWidget);
     connect(&mediaPlayer, &QMediaPlayer::stateChanged, this, &VideoPlayer::mediaStateChanged);
     connect(&mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(&mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
@@ -113,11 +95,6 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
 VideoPlayer::~VideoPlayer()
 {
-}
-
-QSize VideoPlayer::sizeHint() const
-{
-    return (videoItem->size() * qreal(3) / qreal(2)).toSize();
 }
 
 bool VideoPlayer::isPlayerAvailable() const
@@ -175,11 +152,3 @@ void VideoPlayer::setPosition(int position)
     mediaPlayer.setPosition(position);
 }
 
-
-void VideoPlayer::rotateVideo(int angle)
-{
-    //rotate around the center of video element
-    qreal x = videoItem->boundingRect().width() / 2.0;
-    qreal y = videoItem->boundingRect().height() / 2.0;
-    videoItem->setTransform(QTransform().translate(x, y).rotate(angle).translate(-x, -y));
-}
