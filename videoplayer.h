@@ -54,11 +54,21 @@
 #include <QMediaPlayer>
 #include <QMovie>
 #include <QWidget>
+#include <QVideoWidget>
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
 class QSlider;
 QT_END_NAMESPACE
+class VideoPlayer;
+
+class VideoWin : public QVideoWidget
+{
+public:
+    void mouseReleaseEvent(QMouseEvent *event);
+    void setVideoPlayer(VideoPlayer *v){vp = v;}
+    VideoPlayer *vp;
+};
 
 class VideoPlayer : public QWidget
 {
@@ -69,6 +79,9 @@ public:
     ~VideoPlayer();
 
     void load(const QUrl &url);
+    void hideUI();
+    void showUI();
+    bool isUIon(){return uiOn;}
     bool isPlayerAvailable() const;
 
 public slots:
@@ -83,10 +96,11 @@ private slots:
 
 private:
     QMediaPlayer mediaPlayer;
-    QVideoWidget *videoWidget;
+    VideoWin *videoWidget;
     QAbstractButton *playButton;
     QAbstractButton *exitButton;
     QSlider *positionSlider;
+    bool uiOn;
 };
 
 #endif

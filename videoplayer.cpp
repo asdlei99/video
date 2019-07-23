@@ -49,10 +49,18 @@
 ****************************************************************************/
 
 #include "videoplayer.h"
-
 #include <QtWidgets>
 #include <QVideoSurfaceFormat>
-#include <QGraphicsVideoItem>
+
+void VideoWin::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        if(vp->isUIon())
+            vp->hideUI();
+        else
+            vp->showUI();
+    }
+}
 
 VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent)
@@ -82,7 +90,8 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     controlLayout->addWidget(positionSlider);
 
     QBoxLayout *layout = new QVBoxLayout(this);
-    videoWidget = new QVideoWidget;
+    videoWidget = new VideoWin;
+    videoWidget->setVideoPlayer(this);
     layout->setMargin(0);
     layout->addWidget(videoWidget);
     layout->addLayout(controlLayout);
@@ -91,10 +100,27 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     connect(&mediaPlayer, &QMediaPlayer::stateChanged, this, &VideoPlayer::mediaStateChanged);
     connect(&mediaPlayer, &QMediaPlayer::positionChanged, this, &VideoPlayer::positionChanged);
     connect(&mediaPlayer, &QMediaPlayer::durationChanged, this, &VideoPlayer::durationChanged);
+    hideUI();
 }
 
 VideoPlayer::~VideoPlayer()
 {
+}
+
+void VideoPlayer::hideUI()
+{
+    playButton->hide();
+    exitButton->hide();
+    positionSlider->hide();
+    uiOn = false;
+}
+
+void VideoPlayer::showUI()
+{
+    playButton->show();
+    exitButton->show();
+    positionSlider->show();
+    uiOn = true;
 }
 
 bool VideoPlayer::isPlayerAvailable() const
