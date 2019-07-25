@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     QCoreApplication::setOrganizationName("QtProject");
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
     QCommandLineParser parser;
-    parser.setApplicationDescription("Qt MultiMedia Player QGraphicsView");
+    parser.setApplicationDescription("Qt MultiMedia Player");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("url", "The URL to open.");
